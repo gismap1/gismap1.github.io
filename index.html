@@ -164,6 +164,9 @@
             })
         );
 
+        map.on('moving', () => {
+            alert("AAAA")
+        });
 
         map.addControl(new mapboxgl.FullscreenControl());
     </script>
