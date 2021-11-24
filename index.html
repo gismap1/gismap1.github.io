@@ -33,6 +33,89 @@
     <div id="map"></div>
 
     <script>
+            
+        const geojson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.71875,
+          26.745610382199022
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          48.515625,
+          47.040182144806664
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.1044921875,
+          39.30029918615029
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.613983154296875,
+          39.991851471423466
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.6593017578125,
+          39.92764154592116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.54669189453125,
+          40.084375924515186
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.489013671875,
+          40.028666005765274
+        ]
+      }
+    }
+  ]
+}
         mapboxgl.accessToken = 'pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -64,6 +147,28 @@
 
 
         map.addControl(new mapboxgl.FullscreenControl());
+        
+        // Add markers to the map.
+for (const marker of geojson.features) {
+// Create a DOM element for each marker.
+const el = document.createElement('div');
+const width = marker.properties.iconSize[0];
+const height = marker.properties.iconSize[1];
+el.className = 'marker';
+el.style.backgroundImage = `url(https://placekitten.com/g/${width}/${height}/)`;
+el.style.width = `${width}px`;
+el.style.height = `${height}px`;
+el.style.backgroundSize = '100%';
+ 
+el.addEventListener('click', () => {
+window.alert(marker.properties.message);
+});
+ 
+// Add markers to the map.
+new mapboxgl.Marker(el)
+.setLngLat(marker.geometry.coordinates)
+.addTo(map);
+}
     </script>
 
 </body>
