@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Add an animated icon to the map</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
@@ -181,23 +181,6 @@
                 }
             });
 
-            // Alien truth
-            // When the map has finished loading, add a new layer that will be empty 
-            // at first, but will eventually house our confirmed alien landing sites.
-            map.addLayer({
-                id: 'alien-truth',
-                source: {
-                    type: 'geojson',
-                    data: { "type": "FeatureCollection", "features": [] }
-                },
-                type: 'symbol',
-                layout: {
-                    'icon-image': 'rocket-11',
-                    'icon-size': 1,
-                    'icon-allow-overlap': true
-                }
-            });
-
 
         });
 
@@ -242,9 +225,12 @@
             var eventLngLat = [e.lngLat.lng, e.lngLat.lat];
             console.log(eventLngLat)
             var searchRadius = makeRadius(eventLngLat, 200);
-            map.getSource('search-radius').setData(searchRadius);
+            // map.getSource('search-radius').setData(searchRadius);
             var featuresInBuffer = spatialJoin(data, searchRadius);
-            map.getSource('alien-truth').setData(turf.featureCollection(featuresInBuffer));
+
+            if (turf.featureCollection(featuresInBuffer).features[0]) {
+                alert("You have a fola near you ")
+            }
         });
 
 
