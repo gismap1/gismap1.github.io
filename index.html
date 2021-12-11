@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Fola Finder</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -232,18 +232,27 @@
         });
 
 
-        // // Click event goes here!
-        // map.on('click', function (e) {
-        //     var eventLngLat = [e.lngLat.lng, e.lngLat.lat];
-        //     console.log(eventLngLat)
-        //     var searchRadius = makeRadius(eventLngLat, 200);
-        //     // map.getSource('search-radius').setData(searchRadius);
-        //     var featuresInBuffer = spatialJoin(data, searchRadius);
+        // Click event goes here!
+        map.on('click', function (e) {
+            var eventLngLat = [e.lngLat.lng, e.lngLat.lat];
+            console.log(eventLngLat)
+            var searchRadius = makeRadius(eventLngLat, 200);
+            // map.getSource('search-radius').setData(searchRadius);
+            var featuresInBuffer = spatialJoin(data, searchRadius);
 
-        //     if (turf.featureCollection(featuresInBuffer).features[0]) {
-        //         alert("You have a fola near you ")
-        //     }
-        // });
+            if (turf.featureCollection(featuresInBuffer).features[0]) {
+
+
+                Toastify({
+
+                    text: "This is a toast",
+
+                    duration: 3000
+
+                }).showToast();
+
+            }
+        });
 
 
         //makeRadius function goes here!
