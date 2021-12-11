@@ -213,15 +213,7 @@
             var featuresInBuffer = spatialJoin(data, searchRadius);
             if (turf.featureCollection(featuresInBuffer).features[0]) {
 
-
-                Toastify({
-
-                    text: "This is a toast",
-
-                    duration: 3000
-
-                }).showToast();
-
+                alert("a")
             }
             // var searchRadius = makeRadius(eventLngLat, 10000);
             // map.getSource('search-radius').setData(searchRadius);
