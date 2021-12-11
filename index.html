@@ -141,13 +141,13 @@
             // function reload() {
             map.addSource('dot-point', {
                 'type': 'geojson',
-                'data': ('https://pets-backend-api.herokuapp.com/geo/add')
+                'data': ('https://pets-backend-api.herokuapp.com/geo/get')
             });
             // }
 
 
             window.setInterval(function () {
-                map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/add');
+                map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/get');
             }, 15000);
 
 
