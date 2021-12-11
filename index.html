@@ -6,13 +6,11 @@
     <title></title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- TurfJs -->
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
-
-
-
     <!-- GeoDecoder -->
     <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
@@ -36,42 +34,25 @@
 
 <body>
     <div id="map"></div>
-
     <script>
-
         const data = {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "properties": {
-                "fola": "true"
-            },
-            "geometry": {
-                "coordinates": [
-                    22.624708,
-                    39.991791
-                ],
-                "type": "Point"
-            },
-            "id": "767e5d9e92dc96bf7c5cd9e310235cf4"
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "fola": "true"
-            },
-            "geometry": {
-                "coordinates": [
-                    22.625924,
-                    39.991253
-                ],
-                "type": "Point"
-            },
-            "id": "8e85f4610e35d9fd3b5002055de40208"
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "properties": {
+                        "isfola": "true"
+                    },
+                    "type": "Feature",
+                    "geometry": {
+                        "coordinates": [
+                            22.625924,
+                            39.991253
+                        ],
+                        "type": "Point"
+                    }
+                }
+            ]
         }
-    ]
-}
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A';
         const map = new mapboxgl.Map({
@@ -160,13 +141,13 @@
             // function reload() {
             map.addSource('dot-point', {
                 'type': 'geojson',
-                'data': 'https://api.mapbox.com/datasets/v1/ergis1/ckwervfyo04da28ni0sgb7x3m/features?access_token=pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A'
+                'data': ('https://run.mocky.io/v3/e5e069ed-0eec-47b0-8c14-661e88d912f3')
             });
             // }
 
 
             window.setInterval(function () {
-                map.getSource('dot-point').setData('https://api.mapbox.com/datasets/v1/ergis1/ckwervfyo04da28ni0sgb7x3m/features?access_token=pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A');
+                map.getSource('dot-point').setData('https://run.mocky.io/v3/e5e069ed-0eec-47b0-8c14-661e88d912f3');
             }, 15000);
 
 
@@ -222,7 +203,7 @@
         geolocate.on('geolocate', function (e) {
             // console.log(map.getBounds()._sw);
             // var eventLngLat = [lngLat.lng, lngLat.lat];
-
+            // navigator.vibrate(200);
             // console.log(eventLngLat)
             var lon = e.coords.longitude;
             var lat = e.coords.latitude
@@ -231,7 +212,16 @@
             var searchRadius = makeRadius(position, 200);
             var featuresInBuffer = spatialJoin(data, searchRadius);
             if (turf.featureCollection(featuresInBuffer).features[0]) {
-                alert("You have a fola near you ")
+
+
+                Toastify({
+
+                    text: "This is a toast",
+
+                    duration: 3000
+
+                }).showToast();
+
             }
             // var searchRadius = makeRadius(eventLngLat, 10000);
             // map.getSource('search-radius').setData(searchRadius);
@@ -267,7 +257,7 @@
             // Loop through all the features in the source geojson and return the ones that 
             // are inside the filter feature (buffered radius) and are confirmed landing sites
             var joined = sourceGeoJSON.features.filter(function (feature) {
-                return turf.booleanPointInPolygon(feature, filterFeature) && feature.properties.fola === 'true';
+                return turf.booleanPointInPolygon(feature, filterFeature) && feature.properties.isfola === 'true';
             });
 
             return joined;
@@ -277,7 +267,6 @@
 
         map.addControl(new mapboxgl.FullscreenControl());
     </script>
-
 </body>
 
 </html>
