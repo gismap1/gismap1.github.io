@@ -141,13 +141,13 @@
             // function reload() {
             map.addSource('dot-point', {
                 'type': 'geojson',
-                'data': ('https://run.mocky.io/v3/e5e069ed-0eec-47b0-8c14-661e88d912f3')
+                'data': ('https://pets-backend-api.herokuapp.com/geo/add')
             });
             // }
 
 
             window.setInterval(function () {
-                map.getSource('dot-point').setData('https://run.mocky.io/v3/e5e069ed-0eec-47b0-8c14-661e88d912f3');
+                map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/add');
             }, 15000);
 
 
