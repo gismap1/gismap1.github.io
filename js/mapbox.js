@@ -99,7 +99,9 @@ map.on('load', () => {
 
     // Get coordinates from the api every 5 seconds.
     window.setInterval(function () {
-        map.getSource('dot-point').setData(foles);
+        const res = fetch('https://pets-backend-api.herokuapp.com/geo/get')
+            .then(response => response.json())
+            .then(data => foles = data)
     }, 5000);
 
 
