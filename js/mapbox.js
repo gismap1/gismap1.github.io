@@ -4,15 +4,17 @@ const res = fetch('https://pets-backend-api.herokuapp.com/geo/get')
     .then(response => response.json())
     .then(data => foles = data)
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A'; // Access token for mapbox api
+
+
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [21.86279296875, 38.805470223177466],
     zoom: 6
-});
+}); //  Set map location when map is initialized
 
-const size = 100;
+const size = 100; // size of pulsing dot
 
 // This implements `StyleImageInterface`
 // to draw a pulsing dot icon on the map.
@@ -29,7 +31,6 @@ const pulsingDot = {
         canvas.height = this.height;
         this.context = canvas.getContext('2d');
     },
-
 
     // Call once before every frame where the icon will be used.
     render: function () {
@@ -86,23 +87,26 @@ const pulsingDot = {
 };
 
 map.on('load', () => {
+
+    // add pulsing dot when map is loaded.
     map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
 
-    // function reload() {
+    // Get coordinates when map is initialized.
     map.addSource('dot-point', {
         'type': 'geojson',
         'data': ('https://pets-backend-api.herokuapp.com/geo/get')
     });
-    // }
 
-
+    // Get coordinates from the api every 5 seconds.
     window.setInterval(function () {
         map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/get');
-    }, 15000);
+    }, 5000);
 
 
+    // Add button to locate the user.
     map.addControl(geolocate);
 
+    // ??
     map.addLayer({
         'id': 'layer-with-pulsing-dot',
         'type': 'symbol',
@@ -128,7 +132,7 @@ map.on('load', () => {
     });
 });
 
-// Add the control to the map.
+// Add search bar for location search.
 map.addControl(
     new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
@@ -136,7 +140,7 @@ map.addControl(
     })
 );
 
-// Add geolocate control to the map.
+
 // Initialize the GeolocateControl.
 const geolocate = new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -144,7 +148,7 @@ const geolocate = new mapboxgl.GeolocateControl({
     },
     trackUserLocation: true
 });
-// Add the control to the map.
+
 
 // Set an event listener that fires
 // when a geolocate event occurs.
@@ -158,11 +162,8 @@ geolocate.on('geolocate', function (e) {
     console.log(featuresInBuffer)
     if (turf.featureCollection(featuresInBuffer).features[0]) {
         Toastify({
-
-            text: "You are near a fola men",
-
+            text: "Warning you are near fola",
             duration: 2000
-
         }).showToast();
 
     }
@@ -185,6 +186,7 @@ function spatialJoin(sourceGeoJSON, filterFeature) {
 
     return joined;
 }
+
 const ctrlPoint = new MapboxGLButtonControl({
     className: "mapbox-gl-draw_point",
     title: "Draw Point",
@@ -192,4 +194,4 @@ const ctrlPoint = new MapboxGLButtonControl({
 });
 
 map.addControl(new mapboxgl.FullscreenControl());
-map.addControl(ctrlPoint, "bottom-left");
+// map.addControl(ctrlPoint, "bottom-left");
