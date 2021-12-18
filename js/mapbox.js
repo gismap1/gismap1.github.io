@@ -57,8 +57,8 @@ const pulsingDot = {
         // Draw the inner circle.
         context.beginPath();
         context.arc(
-            this.width / 2,
-            this.height / 2,
+            this.width / 10,
+            this.height / 10,
             radius,
             0,
             Math.PI * 2
