@@ -99,7 +99,7 @@ map.on('load', () => {
 
     // Get coordinates from the api every 5 seconds.
     window.setInterval(function () {
-        map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/get');
+        map.getSource('dot-point').setData(foles);
     }, 5000);
 
 
@@ -180,7 +180,6 @@ function spatialJoin(sourceGeoJSON, filterFeature) {
     // Loop through all the features in the source geojson and return the ones that
     // are inside the filter feature (buffered radius) and are confirmed landing sites
     var joined = sourceGeoJSON.features.filter(function (feature) {
-        console.log(feature.properties)
         return turf.booleanPointInPolygon(feature, filterFeature) && feature.properties.isFola === 'true';
     });
 
