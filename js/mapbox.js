@@ -178,7 +178,7 @@ map.on('click', 'search-radius', (e) => {
     // Copy coordinates array.
     const coordinates = e.features[0].geometry.coordinates.slice();
     // const description = e.features[0].properties.folaType;
-    const description = '🥩'
+    const description = '<button type="button" onclick="alert(\'Reported Fola\')">Report as false positive!</button>'
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
