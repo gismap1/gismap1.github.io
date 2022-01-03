@@ -67,9 +67,9 @@ body {
   
   #console {
     position: absolute;
-    width: 240px;
+    top: 6em;
     margin: 10px;
-    padding: 10px 20px;
-    background-color: white;
+    right: 0px;
   }
    
+  .fa-biohazard {transform: scale(2)}
