@@ -115,7 +115,7 @@ map.on('load', () => {
 
     // ??
     map.addLayer({
-        'id': 'layer-with-pulsing-dot',
+        'id': 'search-radius',
         'type': 'symbol',
         'source': 'dot-point',
         'layout': {
@@ -158,7 +158,7 @@ const geolocate = new mapboxgl.GeolocateControl({
 
 // Set an event listener that fires
 // when a geolocate event occurs.
-geolocate.on('geolocate', function (e) {
+geolocate.on('geolocate', (e) => {
     var lon = e.coords.longitude;
     var lat = e.coords.latitude
     var position = [lon, lat];
@@ -174,7 +174,33 @@ geolocate.on('geolocate', function (e) {
 });
 
 
+map.on('click', 'search-radius', (e) => {
+    // Copy coordinates array.
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    // const description = e.features[0].properties.folaType;
+    const description = '🥩'
 
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+});
+
+map.on('mouseenter', 'search-radius', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'search-radius', () => {
+    map.getCanvas().style.cursor = '';
+});
 
 //makeRadius function goes here!
 function makeRadius(lngLatArray, radiusInMeters) {
@@ -190,6 +216,14 @@ function spatialJoin(sourceGeoJSON, filterFeature) {
         return turf.booleanPointInPolygon(feature, filterFeature) && feature.properties.isFola === 'true';
     });
 
+
+
+
     return joined;
+
+
+
+
+
 }
 
