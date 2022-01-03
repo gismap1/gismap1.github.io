@@ -65,11 +65,13 @@ body {
   }
   */
   
-  #console {
+#console {
     position: absolute;
     top: 6em;
     margin: 10px;
     right: 0px;
   }
-   
-  .fa-biohazard {transform: scale(2)}
+
+  .fa-biohazard {
+    color:     #333
+  }

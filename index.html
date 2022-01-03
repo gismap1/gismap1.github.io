@@ -11,12 +11,10 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
         type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
-
     </style>
 </head>
 
 <body>
-
     <div id="map"></div>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -33,9 +31,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <div id='console'>
-        <button onclick="myFunction()"><i class="fas fa-biohazard"></i></button>
-
-
+        <button class="mapboxgl-ctrl mapboxgl-ctrl-group" style="border:none; width: 29px; aspect-ratio: 1
+        " onclick="myFunction()"><i class="fas fa-biohazard"></i></button>
     </div>
 
     <script>
@@ -70,60 +67,63 @@
                     }
                     function showPosition(position) {
                         a.geometry.coordinates = [position.coords.longitude, position.coords.latitude]
-
                     }
-                }
 
-                Swal.fire({
-                    title: 'Select Fola Type',
-                    input: 'select',
-                    inputOptions: {
-                        'Fola': {
-                            bread: 'Bread',
-                            meat: 'Meat',
-                            other: 'Other',
+                    Swal.fire({
+                        title: 'Select Fola Type',
+                        input: 'select',
+                        inputOptions: {
+                            'Fola': {
+                                bread: 'Bread',
+                                meat: 'Meat',
+                                other: 'Other',
+                            },
                         },
-                    },
-                    inputPlaceholder: 'Select',
-                    showCancelButton: true,
-                }).then((value) => {
-                    a.properties.folaType = value.value
+                        inputPlaceholder: 'Select',
+                        showCancelButton: true,
+                    }).then((value) => {
+                        a.properties.folaType = value.value
 
-                    fetch('https://pets-backend-api.herokuapp.com/geo/add', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(a)
-                    }).then(response => {
-                        console.log(response)
-                        if (response.ok) {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                }
-                            })
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Fola Added. Thank you!'
-                            })
-                        }
-                    })
-                        .catch(error => {
-                            Swal.showValidationMessage(
-                                `Request failed: ${error}`
-                            )
+                        fetch('https://pets-backend-api.herokuapp.com/geo/add', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(a)
+                        }).then(response => {
+                            console.log(response)
+                            if (response.ok) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Fola Added. Thank you!'
+                                })
+                            } else {
+                                console.log(`meh`)
+                            }
                         })
-                })
-
+                            .catch(error => {
+                                Swal.showValidationMessage(
+                                    `Request failed: ${error}`
+                                )
+                            })
+                    })
+                } else {
+                    console.log('Canceled')
+                }
             })
+
 
         }
     </script>
