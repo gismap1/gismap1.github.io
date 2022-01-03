@@ -39,48 +39,6 @@
 
     <script>
         function myFunction() {
-            //     Swal.fire({
-            //         title: 'Submit your Github username',
-            //         html: "<form id = 'formValidate' class = 'formValidate'> Write a resolution to end Event" +
-            //             "<input id = 'resolution' name = 'resolution' type = 'text' class = 'form_input' required minlenght = '2' placeholder = 'Describe why you are finalizing this event' required style = 'width: 80%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + " </ br> " +
-            //             "<input id = 'date' name = 'date' type = 'text' class = 'form_input' required placeholder = 'Data' required style = 'width: 38%; height = 40%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + " & nbsp & nbsp & nbsp & nbsp & nbsp "
-            //             + "<input id = 'end_time' name = 'end_time' type = 'text' class = 'form_input' required placeholder = 'Time' required style = 'width: 38%; height = 40%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + "</ form>",
-            //         inputAttributes: {
-            //             autocapitalize: 'off'
-            //         },
-            //         showCancelButton: true,
-            //         confirmButtonText: 'Look up',
-            //         showLoaderOnConfirm: true,
-            //         preConfirm: (login) => {
-            //             return fetch('https://hookb.in/NOjDNL06ejhe8mNN8Np0/', {
-            //                 method: "POST",
-            //                 headers: { 'Content-Type': 'application/json' },
-            //                 body: JSON.stringify(login)
-            //             })
-            //                 .then(response => {
-            //                     if (!response.ok) {
-            //                         throw new Error(response.statusText)
-            //                     }
-            //                     return response.json()
-            //                 })
-            //                 .catch(error => {
-            //                     Swal.showValidationMessage(
-            //                         `Request failed: ${error}`
-            //                     )
-            //                 })
-            //         },
-            //         allowOutsideClick: () => !Swal.isLoading()
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             Swal.fire({
-            //                 title: `${result.value.login}'s avatar`,
-            //                 imageUrl: result.value.avatar_url
-            //             })
-            //         }
-            //     })
-
-            // }
-
             const a = {
                 "geometry": {
                     "coordinates": [
@@ -93,7 +51,6 @@
                     "folaType": ""
                 }
             }
-
 
             Swal.fire({
                 title: 'Is fola found on your current location?',
@@ -115,7 +72,6 @@
 
                     }
                 }
-
 
                 Swal.fire({
                     title: 'Select Fola Type',
@@ -167,9 +123,6 @@
                 })
 
             })
-
-
-
 
         }
     </script>
