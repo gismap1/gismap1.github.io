@@ -6,13 +6,13 @@ const res = fetch('https://pets-backend-api.herokuapp.com/geo/get')
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXJnaXMxIiwiYSI6ImNrd2NqcGNpdzFqNDMycXAydzN5amU5cngifQ.DL--NY3BJoVgzTZh6kXZ7A'; // Access token for mapbox api
 
-
+//  Set map location when map is initialized
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [21.86279296875, 38.805470223177466],
-    zoom: 6
-}); //  Set map location when map is initialized
+    zoom: 7
+});
 
 const size = 100; // size of pulsing dot
 
@@ -57,8 +57,8 @@ const pulsingDot = {
         // Draw the inner circle.
         context.beginPath();
         context.arc(
-            this.width / 10,
-            this.height / 10,
+            this.width / 2,
+            this.height / 2,
             radius,
             0,
             Math.PI * 2
@@ -100,14 +100,18 @@ map.on('load', () => {
     // Get coordinates from the api every 5 seconds.
     window.setInterval(function () {
         map.getSource('dot-point').setData('https://pets-backend-api.herokuapp.com/geo/get');
-        const res = fetch('https://pets-backend-api.herokuapp.com/geo/get')
+        fetch('https://pets-backend-api.herokuapp.com/geo/get')
             .then(response => response.json())
             .then(data => foles = data)
     }, 5000);
 
-
     // Add button to locate the user.
     map.addControl(geolocate);
+
+    // // Add another controllers 
+    // map.addControl(ctrlPoint, "bottom-left");
+    // map.addControl(ctrlLine, "bottom-right");
+    // map.addControl(ctrlPolygon, "top-right");
 
     // ??
     map.addLayer({
@@ -152,14 +156,12 @@ const geolocate = new mapboxgl.GeolocateControl({
     trackUserLocation: true
 });
 
-
 // Set an event listener that fires
 // when a geolocate event occurs.
 geolocate.on('geolocate', function (e) {
     var lon = e.coords.longitude;
     var lat = e.coords.latitude
     var position = [lon, lat];
-    console.log(position);
     var searchRadius = makeRadius(position, 2000);
     var featuresInBuffer = spatialJoin(foles, searchRadius);
     console.log(featuresInBuffer)
@@ -168,9 +170,11 @@ geolocate.on('geolocate', function (e) {
             text: "Warning you are near fola",
             duration: 2000
         }).showToast();
-
     }
 });
+
+
+
 
 //makeRadius function goes here!
 function makeRadius(lngLatArray, radiusInMeters) {
@@ -189,11 +193,3 @@ function spatialJoin(sourceGeoJSON, filterFeature) {
     return joined;
 }
 
-const ctrlPoint = new MapboxGLButtonControl({
-    className: "mapbox-gl-draw_point",
-    title: "Draw Point",
-    eventHandler: one
-});
-
-map.addControl(new mapboxgl.FullscreenControl());
-// map.addControl(ctrlPoint, "bottom-left");

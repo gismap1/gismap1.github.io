@@ -11,10 +11,12 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
         type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
     </style>
 </head>
 
 <body>
+
     <div id="map"></div>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -25,6 +27,153 @@
     <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
     <script src="js/mapbox.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.3/dist/sweetalert2.all.min.js"></script>
+
+
+    <div id='console'>
+        <button onclick="myFunction()">Add Fola</button>
+        <!-- <h1>Motor vehicle collisions</h1>
+        <p>Data: <a href='https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95'>Motor
+                vehicle collision injuries and deaths</a> in NYC, Jan 2016</p> -->
+    </div>
+
+    <script>
+        function myFunction() {
+            //     Swal.fire({
+            //         title: 'Submit your Github username',
+            //         html: "<form id = 'formValidate' class = 'formValidate'> Write a resolution to end Event" +
+            //             "<input id = 'resolution' name = 'resolution' type = 'text' class = 'form_input' required minlenght = '2' placeholder = 'Describe why you are finalizing this event' required style = 'width: 80%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + " </ br> " +
+            //             "<input id = 'date' name = 'date' type = 'text' class = 'form_input' required placeholder = 'Data' required style = 'width: 38%; height = 40%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + " & nbsp & nbsp & nbsp & nbsp & nbsp "
+            //             + "<input id = 'end_time' name = 'end_time' type = 'text' class = 'form_input' required placeholder = 'Time' required style = 'width: 38%; height = 40%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; '/> " + "</ form>",
+            //         inputAttributes: {
+            //             autocapitalize: 'off'
+            //         },
+            //         showCancelButton: true,
+            //         confirmButtonText: 'Look up',
+            //         showLoaderOnConfirm: true,
+            //         preConfirm: (login) => {
+            //             return fetch('https://hookb.in/NOjDNL06ejhe8mNN8Np0/', {
+            //                 method: "POST",
+            //                 headers: { 'Content-Type': 'application/json' },
+            //                 body: JSON.stringify(login)
+            //             })
+            //                 .then(response => {
+            //                     if (!response.ok) {
+            //                         throw new Error(response.statusText)
+            //                     }
+            //                     return response.json()
+            //                 })
+            //                 .catch(error => {
+            //                     Swal.showValidationMessage(
+            //                         `Request failed: ${error}`
+            //                     )
+            //                 })
+            //         },
+            //         allowOutsideClick: () => !Swal.isLoading()
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             Swal.fire({
+            //                 title: `${result.value.login}'s avatar`,
+            //                 imageUrl: result.value.avatar_url
+            //             })
+            //         }
+            //     })
+
+            // }
+
+            const a = {
+                "geometry": {
+                    "coordinates": [
+                    ],
+                    "type": "Point"
+                },
+                "type": "Feature",
+                "properties": {
+                    "isFola": "true",
+                    "folaType": ""
+                }
+            }
+
+
+            Swal.fire({
+                title: 'Is fola found on your current location?',
+                text: "You will be asked to provide your current location",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, provide my location!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                    function showPosition(position) {
+                        a.geometry.coordinates = [position.coords.longitude, position.coords.latitude]
+
+                    }
+                }
+
+
+                Swal.fire({
+                    title: 'Select Fola Type',
+                    input: 'select',
+                    inputOptions: {
+                        'Fola': {
+                            bread: 'Bread',
+                            meat: 'Meat',
+                            other: 'Other',
+                        },
+                    },
+                    inputPlaceholder: 'Select',
+                    showCancelButton: true,
+                }).then((value) => {
+                    a.properties.folaType = value.value
+
+                    fetch('https://pets-backend-api.herokuapp.com/geo/add', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(a)
+                    }).then(response => {
+                        console.log(response)
+                        if (response.ok) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Fola Added. Thank you!'
+                            })
+                        }
+                    })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                })
+
+            })
+
+
+
+
+        }
+    </script>
+
 </body>
 
 </html>
