@@ -1,5 +1,4 @@
 var foles;
-
 const res = fetch('https://pets-backend-api.herokuapp.com/geo/get')
     .then(response => response.json())
     .then(data => foles = data)
@@ -108,11 +107,6 @@ map.on('load', () => {
     // Add button to locate the user.
     map.addControl(geolocate);
 
-    // // Add another controllers 
-    // map.addControl(ctrlPoint, "bottom-left");
-    // map.addControl(ctrlLine, "bottom-right");
-    // map.addControl(ctrlPolygon, "top-right");
-
     // ??
     map.addLayer({
         'id': 'search-radius',
@@ -140,12 +134,12 @@ map.on('load', () => {
 });
 
 // Add search bar for location search.
-map.addControl(
-    new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl
-    })
-);
+// map.addControl(
+//     new MapboxGeocoder({
+//         accessToken: mapboxgl.accessToken,
+//         mapboxgl: mapboxgl
+//     })
+// );
 
 
 // Initialize the GeolocateControl.
@@ -177,8 +171,10 @@ geolocate.on('geolocate', (e) => {
 map.on('click', 'search-radius', (e) => {
     // Copy coordinates array.
     const coordinates = e.features[0].geometry.coordinates.slice();
+    const folaType = e.features[0].properties.folaType
+    const isFola = e.features[0].properties.isFola
     // const description = e.features[0].properties.folaType;
-    const description = '<button type="button" onclick="alert(\'Reported Fola\')">Report as false positive!</button>'
+    // const description = '<button type="button" onclick="alert(\'Reported Fola\')">Report as false positive!</button>'
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -187,10 +183,22 @@ map.on('click', 'search-radius', (e) => {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(map);
+    Swal.fire({
+        title: '<strong>Fola</strong>',
+        icon: 'warning',
+        html:
+            'Fola Type: <b>' + folaType + '</b>, ' +
+            'Is Fola: <b>' + isFola + '</b>',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText:
+            '<i class="fa fa-thumbs-up"></i>',
+        confirmButtonAriaLabel: 'Thumbs up, great!',
+        cancelButtonText:
+            '<i class="fa fa-thumbs-down"></i>',
+        cancelButtonAriaLabel: 'Thumbs down'
+    })
 });
 
 map.on('mouseenter', 'search-radius', () => {
